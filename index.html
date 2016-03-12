@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue JS Example</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+</head>
+<body>
+    
+    <div class="container" id="examp">
+        <div class="page-header">
+            <h1>Vue JS <small>Rehber Uygulaması</small> </h1>
+        </div>
+        <div class="row">
+            <div class="col-xs-3">
+                <div class="form-group">
+                    <label for="email">Ad Soyad:</label>
+                    <input v-model="guideName" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="email">Telefon:</label>
+                    <input v-model="guidePhone" type="text" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-default" v-on:click="addGuide">Kaydet</button>
+            </div>
+            <div class="col-xs-9">
+                <input v-model="search" type="text" class="form-control" placeholder="Bul">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Ad Soyad</th>
+                        <th>Numara</th>
+                        <th>İşlemler</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="guide in guides | filterBy search">
+                        <td>{{ guide.name }}</td>
+                        <td>{{ guide.phone }}</td>
+                        <td>
+                            <button v-on:click="removeGuide($index)" type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <script src="vue.min.js"></script>
+    <script>
+        var examp = new Vue({
+            el: '#examp', // Uygulamamızın kapsayacağı div'i seçtik
+            data: { // Uygulamamızda kullanacağımız değişkenleri tanımladık
+                guideName: "",
+                guidePhone: "",
+                search: "",
+                guides: []
+            },
+            methods: { // Uygulamamızda kullanacağımız methodları tanımladık
+                addGuide: function(){
+                    var guidename = this.guideName.trim()
+                    var guidephone = this.guidePhone.trim()
+                    if (guidename && guidephone) { // Eğer isim ve numara kısmı boş değilse if bloğu çalışacak
+                        this.guides.push({ name: guidename, phone: guidephone }) // bilgileri diziye aktardık
+                        this.guideName = '' // alanları temizledik
+                        this.guidePhone = '' // alanları temizledik
+                    }
+                },
+                removeGuide: function (index) {
+                    this.guides.splice(index, 1) // index değerine göre diziden eleman sildik
+                }
+            }
+        })
+    </script>
+    
+</body>
+</html>
